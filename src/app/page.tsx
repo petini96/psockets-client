@@ -1,95 +1,111 @@
-import Image from "next/image";
+
+"use client"
+
 import styles from "./page.module.css";
+import io from "socket.io-client";
+import { useEffect, useState } from "react";
+import { Alert, AlertTitle, Avatar, Box, Button, Container, Grid } from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+import Image from 'next/image'
+ 
+type User = {
+  id?: string
+  name: string
+  photo?: string
+  __v?: number
+}
 
+type News = {
+  id?: string
+  title: string
+  message: string
+}
 export default function Home() {
+
+  const [users, setUsers] = useState<User[]>([]);
+  const [news, setNews] = useState<News>();
+
+  useEffect(() => {
+    const socket = io("http://api.psockets.roboticsmind.com.br");
+
+    socket.on('user-registered', (user: User) => {
+      console.log(user);
+      setUsers((prevUsers) => [...prevUsers, user]);
+    });
+
+    socket.on('news', (news: News) => {
+      console.log(news);
+      setNews(news);
+    });
+
+    return () => {
+      socket.off('user-registered');
+      socket.disconnect();
+    };
+  }, []);
+
+  const chunkArray = (array: User[], size: number) => {
+    const chunkedArray: User[][] = [];
+    for (let i = 0; i < array.length; i += size) {
+      chunkedArray.push(array.slice(i, i + size));
+    }
+    return chunkedArray;
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
+    <Container>
+      <main className={styles.main}>
+        <Grid container justifyContent={"center"} alignItems={"center"}>
+          <Grid xs={5} item>
             <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
+              src={`fenix.svg`}
               width={100}
-              height={24}
-              priority
+              height={100}
+              alt="Picture of the author"
             />
-          </a>
-        </div>
-      </div>
+          </Grid>
+          <Grid xs={6} item>
+            <h1> @psockets</h1>
+          </Grid>
+        </Grid>
+        {news && (
+          <Grid item sm={12} className="MuiCircularProgress-indeterminate">
+            <Alert severity="warning">
+              <AlertTitle sx={{ width: 100 }}>{news.title}</AlertTitle>
+              {news.message}
+            </Alert>
+          </Grid>
+        )}
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        {/* Mapeando grupos de usuários para linhas */}
+        {chunkArray(users, 4).map((userGroup, index) => (
+          <Box key={index}>
+            <Grid container gap={1} alignItems={"center"} item marginY={3}>
+              {userGroup.map((user, userIndex) => (
+                <Grid item sm={3} key={userIndex}>
+                  <div className="card">
+                    {user.photo && (
+                      <Avatar alt="Remy Sharp" src={"http://api.psockets.roboticsmind.com.br" + user.photo} sx={{ width: 65, height: 65 }} />
+                    )}
+                    {user.name}
+                  </div>
+                </Grid>
+              ))}
+              {/* Renderizar o botão somente se o grupo atual tiver 4 usuários */}
+              {userGroup.length === 4 && (
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+                <Box sx={{ width: "100%" }} alignItems={"center"} justifyContent={"center"}>
+                  <Button variant="outlined" startIcon={<WhatshotIcon />} sx={{ padding: "10px" }}>
+                    PRONTO
+                  </Button>
+                </Box>
+              )}
+              <hr />
+            </Grid>
+          </Box>
+        ))}
+      </main>
+    </Container>
   );
 }
