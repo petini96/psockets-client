@@ -4,7 +4,7 @@ import { Button, Container, Grid, TextField, styled } from "@mui/material";
 import styles from "../../page.module.css";
 import * as React from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import axios, { AxiosError, AxiosResponse } from 'axios'; 
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 type User = {
     id?: string;
@@ -45,7 +45,8 @@ export default function Cadastro() {
             const formData = new FormData();
             formData.append("name", name);
             formData.append("file", selectedFile);
-            const host = "http://api.psockets.roboticsmind.com.br" 
+
+            const host = `${process.env.NEXT_PUBLIC_API_HOST}`
             axios.post<UploadResponse>(host + "/users", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -56,13 +57,10 @@ export default function Cadastro() {
                 })
                 .catch((error: AxiosError) => {
                     if (error.response) {
-                        // A resposta do servidor está fora do intervalo de 2xx
                         console.error('Error response:', error.response.data);
                     } else if (error.request) {
-                        // A solicitação foi feita mas não houve resposta
                         console.error('Error request:', error.request);
                     } else {
-                        // Algo aconteceu na configuração da solicitação que desencadeou um erro
                         console.error('Error message:', error.message);
                     }
                 });

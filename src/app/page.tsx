@@ -1,11 +1,9 @@
-
 "use client"
 
 import styles from "./page.module.css";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import { Alert, AlertTitle, Avatar, Box, Button, Container, Grid } from "@mui/material";
-import SendIcon from '@mui/icons-material/Send';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import Image from 'next/image'
  
@@ -21,13 +19,14 @@ type News = {
   title: string
   message: string
 }
+
 export default function Home() {
 
   const [users, setUsers] = useState<User[]>([]);
   const [news, setNews] = useState<News>();
 
   useEffect(() => {
-    const socket = io("http://api.psockets.roboticsmind.com.br");
+    const socket = io(`${process.env.NEXT_PUBLIC_API_HOST}`);
 
     socket.on('user-registered', (user: User) => {
       console.log(user);
@@ -78,7 +77,6 @@ export default function Home() {
           </Grid>
         )}
 
-        {/* Mapeando grupos de usuários para linhas */}
         {chunkArray(users, 4).map((userGroup, index) => (
           <Box key={index}>
             <Grid container gap={1} alignItems={"center"} item marginY={3}>
@@ -86,15 +84,14 @@ export default function Home() {
                 <Grid item sm={3} key={userIndex}>
                   <div className="card">
                     {user.photo && (
-                      <Avatar alt="Remy Sharp" src={"http://api.psockets.roboticsmind.com.br" + user.photo} sx={{ width: 65, height: 65 }} />
+                      <Avatar alt="Remy Sharp" src={ user.photo} sx={{ width: 65, height: 65 }} />
                     )}
                     {user.name}
                   </div>
                 </Grid>
               ))}
-              {/* Renderizar o botão somente se o grupo atual tiver 4 usuários */}
-              {userGroup.length === 4 && (
 
+              {userGroup.length === 4 && (
                 <Box sx={{ width: "100%" }} alignItems={"center"} justifyContent={"center"}>
                   <Button variant="outlined" startIcon={<WhatshotIcon />} sx={{ padding: "10px" }}>
                     PRONTO
