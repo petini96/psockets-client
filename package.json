@@ -19,6 +19,7 @@
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "next": "14.2.3",
+    "psockets-client": "file:",
     "react": "^18",
     "react-dom": "^18",
     "socket.io-client": "^4.7.5",

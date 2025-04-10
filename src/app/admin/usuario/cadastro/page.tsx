@@ -1,7 +1,7 @@
 "use client"
 
 import { Button, Container, Grid, TextField, styled } from "@mui/material";
-import styles from "../../page.module.css";
+import styles from "../../../page.module.css";
 import * as React from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios, { AxiosError, AxiosResponse } from 'axios';
