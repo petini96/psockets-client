@@ -1,28 +1,20 @@
-// app/materials/page.tsx
-import Link from 'next/link';
+// app/materials/page.tsx (versão corrigida)
+
 import { getMaterials } from '@/app/lib/data';
+import MaterialList from './MaterialList'; // 👈 Importe o novo componente
 
 export default function MaterialsPage() {
-    const materials = getMaterials();
+    const materials = getMaterials(); // Busca os dados no servidor
+
     return (
-        <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px 40px' }}>
-            <h1 style={{ borderBottom: '2px solid #eee', paddingBottom: 10 }}>📋 Seleção de Material</h1>
-            <p>Escolha uma chapa para iniciar o plano de corte.</p>
-            <div style={{ flex: 2, minWidth: 350 }}>
-                <ul style={{ listStyle: 'none', padding: 0 }}>
-                    {materials.map(material => (
-                        <li key={material.id} style={{ background: '#f9f9f9', border: '1px solid #ddd', borderRadius: 8, padding: 15, marginBottom: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div>
-                                <strong style={{ fontSize: '1.1em' }}>{material.name}</strong>
-                                <p style={{ margin: '5px 0 0', color: '#555' }}>Dimensões: {material.width}mm x {material.height}mm</p>
-                            </div>
-                            <Link href={`/planner?materialId=${material.id}`} style={{ background: '#007bff', color: 'white', textDecoration: 'none', padding: '8px 12px', borderRadius: 5, cursor: 'pointer' }}>
-                                Usar Chapa →
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+        <div style={{ maxWidth: 800, margin: '40px auto', padding: '0 20px' }}>
+            <header style={{ textAlign: 'center', marginBottom: 40 }}>
+                <h1 style={{ fontSize: '2.5rem', color: '#6d4c41', fontWeight: 700 }}>📋 Plano de Corte</h1>
+                <p style={{ fontSize: '1.1rem', color: '#8d6e63' }}>Escolha uma chapa para iniciar a otimização do seu projeto.</p>
+            </header>
+            
+            {/* Renderize o Componente de Cliente, passando os dados para ele */}
+            <MaterialList materials={materials} />
         </div>
     );
 }

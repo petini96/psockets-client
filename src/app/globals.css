@@ -25,3 +25,17 @@
         opacity: 0;
     }
 }
+
+/* app/globals.css */
+
+body {
+  background-color: #f4f1ee;
+  font-family: 'Inter', sans-serif; /* A fonte 'Inter' já é aplicada pela classe, mas isso serve como fallback */
+  color: #4a4a4a;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
