@@ -1,0 +1,27 @@
+.MuiCircularProgress-indeterminate {
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        background-color: #ffeb3b; /* Initial color */
+    }
+    50% {
+        transform: scale(1.1);
+        background-color: #f44336; /* Midway color */
+    }
+    100% {
+        transform: scale(1);
+        background-color: #ffeb3b; /* Final color */
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
