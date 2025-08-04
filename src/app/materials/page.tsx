@@ -1,10 +1,8 @@
-// app/materials/page.tsx (versão corrigida)
-
 import { getMaterials } from '@/app/lib/data';
-import MaterialList from './MaterialList'; // 👈 Importe o novo componente
+import MaterialList from './MaterialList';
 
 export default function MaterialsPage() {
-    const materials = getMaterials(); // Busca os dados no servidor
+    const materials = getMaterials();
 
     return (
         <div style={{ maxWidth: 800, margin: '40px auto', padding: '0 20px' }}>
@@ -13,7 +11,6 @@ export default function MaterialsPage() {
                 <p style={{ fontSize: '1.1rem', color: '#8d6e63' }}>Escolha uma chapa para iniciar a otimização do seu projeto.</p>
             </header>
             
-            {/* Renderize o Componente de Cliente, passando os dados para ele */}
             <MaterialList materials={materials} />
         </div>
     );

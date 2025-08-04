@@ -1,4 +1,3 @@
-// app/lib/parts-data.ts
 import type { PolygonShape, Side, ProjectPart } from '@/app/lib/types';
 
 const createRectangle = (id: number, width: number, height: number): PolygonShape => {
@@ -11,7 +10,6 @@ const createRectangle = (id: number, width: number, height: number): PolygonShap
     };
 };
 
-// NOVO: Lista expandida de peças para um projeto de armário mais completo.
 const projectCuttingList: Omit<ProjectPart, 'quantity'>[] = [
     { id: 101, name: 'Porta de Armário (G)', shape: createRectangle(101, 700, 450) },
     { id: 102, name: 'Porta de Armário (P)', shape: createRectangle(102, 500, 350) },
@@ -27,7 +25,6 @@ const projectCuttingList: Omit<ProjectPart, 'quantity'>[] = [
 ];
 
 export function getProjectParts(): ProjectPart[] {
-    // Quantidades de exemplo para o projeto
     return [
         { ...projectCuttingList[0], quantity: 2 },
         { ...projectCuttingList[1], quantity: 4 },

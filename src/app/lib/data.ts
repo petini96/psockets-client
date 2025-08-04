@@ -1,7 +1,5 @@
-// app/lib/data.ts
 import type { Material } from './types';
 
-// NOVO: Lista expandida de materiais com mais opções de MDF, compensado e outros.
 const materials: Material[] = [
   { id: 1, name: 'Chapa MDF 18mm (Branco TX)', width: 2750, height: 1850 },
   { id: 2, name: 'Chapa MDF 15mm (Branco TX)', width: 2750, height: 1850 },

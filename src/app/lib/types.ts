@@ -1,5 +1,3 @@
-// app/lib/types.ts
-
 // Tipos Geométricos e de Forma
 export type Unit = 'mm' | 'cm' | 'm';
 export type ShapeType = 'polygon' | 'circle';
@@ -13,6 +11,7 @@ export interface BaseShape {
     id: number;
     type: ShapeType;
     position: Vector;
+    originId?: number; // ID da peça de origem do projeto
 }
 
 export interface PolygonShape extends BaseShape {
@@ -41,9 +40,10 @@ export interface Projection {
 
 // Tipos de Interação do Usuário
 export type Interaction =
-    | { type: 'drag'; id: number; offset: Vector }
+    | { type: 'drag'; id: number; initialPositions: Map<number, Vector> } // ATUALIZADO
     | { type: 'rotate'; id: number; startAngle: number; initialRotation: number }
     | { type: 'scale'; id: number; initialShape: Shape; initialDistance: number }
+    | { type: 'marquee'; start: Vector; end: Vector } // NOVO
     | null;
 
 // Tipo para Materiais (Chapas)
@@ -58,6 +58,6 @@ export interface Material {
 export interface ProjectPart {
     id: number;
     name: string;
-    shape: PolygonShape; // Assumindo que a maioria das peças são polígonos
+    shape: PolygonShape;
     quantity: number;
 }
